@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>External chatbot demo</title>
+</head>
+<body>
+  <!-- An empty element to mount UJET Web SDK widget. -->
+  <div id="ujet-widget"></div>
+
+  <!-- INCLUDE UJET WEB SDK Widget -->
+  <script src="https://websdk.ujet.co/v3/widget.js"></script>
+  <script>
+    var ujet = new UJET({
+      companyId: "$UJET_COMPANY_ID",
+      tenant: "$UJET_TENANT",
+      authenticate: getAuthToken
+    });
+
+    // use `.config` to configure custom data.
+    ujet.config({
+      customData: {
+        // external_chat_transfer is a special custom data
+        "external_chat_transfer": {
+          "greeting_override": "Please hold while we connect you with a human agent.",
+          "agent": {
+            "name": "Agent Name",
+            "avatar": "https://ujet.s3.amazonaws.com/default-virtual-agent-avatar-1.png"
+          },
+          "transcript": [
+            {
+              "sender": "agent",
+              "timestamp": "2021-03-15 12:00:00Z",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hello! How can I help you today?"
+                },
+                {
+                  "type": "buttons",
+                  "buttons": [
+                    {
+                      "label": "Create New Order",
+                      "selected": false
+                    },
+                    {
+                      "label": "Check Order Status",
+                      "selected": true
+                    },
+                    {
+                      "label": "Check Account Balance",
+                      "selected": false
+                    },
+                  ]
+                }
+              ]
+            },
+          ]
+        }
+      }
+    });
+
+    ujet.mount("#ujet-widget");
+
+    function getAuthToken() {
+      // The `/auth/token` endpoint in this demo is powered by `app.js` at the source root
+      // YOU SHOULD HAVE THIS KIND OF API ON YOUR SERVER
+      return fetch('/auth/token', {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify({
+          payload: {
+            identifier: 'test@email.com',
+            name: 'Test user',
+            email: 'test@user.com',
+            phone: '1800UJETSDK'
+          }
+        })
+      }).then(function(resp) {
+        return resp.json();
+      });
+    }
+  </script>
+</body>
+</html>

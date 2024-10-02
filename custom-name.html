@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Widget name</title>
+</head>
+<body>
+  <!-- An empty element to mount UJET Web SDK widget. -->
+  <div id="ujet-widget"></div>
+
+  <!-- INCLUDE UJET WEB SDK Widget -->
+  <script src="https://websdk.ujet.co/v3/widget.js"></script>
+  <script>
+    var ujet = new UJET({
+      companyId: "$UJET_COMPANY_ID",
+      tenant: "$UJET_TENANT",
+      authenticate: getAuthToken
+    });
+
+    // customize widget name with .config
+    ujet.config({
+      name: '__NAME__'
+    });
+
+    ujet.mount("#ujet-widget");
+
+    function getAuthToken() {
+      // The `/auth/token` endpoint in this demo is powered by `app.js` at the source root
+      // YOU SHOULD HAVE THIS KIND OF API ON YOUR SERVER
+      return fetch('/auth/token', {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify({
+          payload: {
+            identifier: 'test@email.com',
+            name: 'Test user',
+            email: 'test@user.com',
+            phone: '1800UJETSDK'
+          }
+        })
+      }).then(function(resp) {
+        return resp.json();
+      });
+    }
+  </script>
+</body>
+</html>

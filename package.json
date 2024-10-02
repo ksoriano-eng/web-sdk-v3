@@ -1,0 +1,14 @@
+{
+  "name": "web-sdk-demo",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file=.env app.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "string-replace-middleware": "^1.1.0"
+  }
+}
